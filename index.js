@@ -10,9 +10,6 @@ console.log(modalInstance)
 // modalInstance.show() // открыть модальное окно
 // modalInstance.hide() // закрыть модальное окно
 
-// Lightbox
-const lightboxInstance = new SimpleLightbox('.gallery a')
-
 // helpers
 function $(selector) {
   return document.querySelector(selector)
@@ -25,7 +22,6 @@ function render(collection, wrapper, user = null) {
     templates += template
   })
   wrapper.innerHTML = templates
-  //user.textcontent = user
 }
 
 function counter(collection, id) {
@@ -42,15 +38,20 @@ const timeElement = $('.navbar__time')
 const confirmButtonElement = $('#confirm')
 const rootElement = $('#root')
 let counterElement = $('.card__counter')
+let counterElementProgress = $('.card__counter-progress')
+let counterElementDone = $('.card__counter-done')
+
 let titleElement = $('#title')
-let descriptioEnlement =$('#description')
+let descriptioEnlement = $('#description')
 let userElement = $('#user')
+const rootElementProgress = $('#progress')
+const rootElementDone = $('#done')
+const removeAll = $('#remove')
 
 // часы
 window.onload = function () {
   window.setInterval(function () {
     let now = new Date();
-    //var clock = document.getElementById("clock");
     timeElement.innerHTML = now.toLocaleTimeString();
   }, 1000);
 };
@@ -59,7 +60,6 @@ window.onload = function () {
 let todos = []
 
 // constructor
-
 function Todo(title, description, user) {
   this.id = Date.now()
   this.date = new Date().toLocaleTimeString();
@@ -79,7 +79,14 @@ function buildTodoTemplate(todo) {
       </div>
       <div class="date">${todo.date}</div>
     </div>
-    <select class="form-select" aria-label="Default select example">
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary" data-role="todo">Todo</button>
+      <button type="button" class="btn btn-secondary" data-role="progress">In progress</button>
+      <button type="button" class="btn btn-secondary" data-role="done">Done</button>
+    </div>
+
+    <select class="form-select" data-role="menu" aria-label="Default select example">
       <option value="1">Todo</option>
       <option value="2">In progress</option>
       <option value="3">Done</option>
@@ -97,12 +104,11 @@ confirmButtonElement.addEventListener('click', handleAddForm)
 
 // создать карточку
 function handleAddForm(event) {
-  event.preventDefault() // отменить действия браузера по-умолчанию
+  //event.preventDefault() // отменить действия браузера по-умолчанию
   const contentTitle = titleElement.value //чтобы выдало значение введенного текста
   const contentDescription = descriptioEnlement.value
-  const contentuser = userElement.value
-
-  const todo = new Todo(contentTitle, contentDescription, contentuser)
+  const contentUser = userElement.value
+  const todo = new Todo(contentTitle, contentDescription, contentUser)
   todos.push(todo) // добавляем в массив todos
   render(todos, rootElement)
   counter(todos, counterElement)
@@ -112,7 +118,6 @@ function handleAddForm(event) {
 rootElement.addEventListener('click', handleDeleteForm)
 function handleDeleteForm(event) {
   console.log('ok')
-  //const target = event.target;
   const { target } = event;
   console.log(target)
   const { role, id } = target.dataset
@@ -135,5 +140,44 @@ function handleOpenModal(event) {
     confirmButtonElement.removeEventListener('click', handleAddForm)
   }
   render(todos, rootElement)
+}
 
+// const rootElementProgress = $('#progress')
+rootElement.addEventListener('click', hanleSelectProgress)
+function hanleSelectProgress(event) {
+  event.preventDefault()
+  const { target } = event
+  const { role } = target.dataset
+  if (role == 'progress') {
+    //handleAddFormProgress()
+    //todos.length = ''
+    render(todos, rootElementProgress)
+    counter(todos, counterElementProgress)
+  }
+}
+
+rootElement.addEventListener('click', hanleSelectDone)
+function hanleSelectDone(event) {
+  event.preventDefault()
+  const { target } = event
+  const { role } = target.dataset
+  if (role == 'done') {
+    //handleAddFormProgress()
+    //todos.length = ''
+    render(todos, rootElementDone)
+    counter(todos, counterElementDone)
+  }
+}
+
+// удалять все на Remove
+removeAll.addEventListener('click', handleremoveAll)
+function handleremoveAll () {
+  console.log('delete')
+  todos.length = ''
+  render (todos, rootElement)
+  render(todos, rootElementProgress)
+  render(todos, rootElementDone)
+  counter(todos, counterElement)
+  counter(todos, counterElementProgress)
+  counter(todos, counterElementDone)
 }
