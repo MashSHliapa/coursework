@@ -12,52 +12,123 @@
 </head>
 
 <body>
+  <div class="container">
+    <nav class="navbar navbar-light">
+      <div class="navbar__fluid">
+        <a class="navbar__brand" href="#">Trello</a>
+      </div>
+      <div class="navbar__clock">
+        <div class="navbar__time">00:00</div>
+      </div>
+    </nav>
 
+    <div class="d-flex flex-row justify-content-around bd-highlight mb-3">
+      <div class="column">
+        <div class="card card-todo">
+          <div class="card__header">
+            <div class="card__title">Todo</div>
+            <div class="card__counter">0</div>
+          </div>
+          <div class="card__separator"></div>
+          <div id="root" class="card__body">
 
-  <!-- Button trigger modal-->
-  <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add todo
-  </button>
+            <!--<div id="todo">
+              <div class="data">
+                <div class="data-from-user">
+                  <div class="data-title">Title</div>
+                  <div class="data-description">Description</div>
+                  <div class="data-user">User</div>
+                </div>
+                <div class="date">Date</div>
 
+              </div>
+              <select class="form-select" aria-label="Default select example">
+                <option selected>Open this select menu</option>
+                <option value="1">Todo</option>
+                <option value="2">In progress</option>
+                <option value="3">Done</option>
+              </select>
+              <div class="btn-group" role="group" aria-label="example">
+                <button type="button" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-danger">Remove</button>
+              </div>
+            </div>-->
 
-
-  <!-- Button trigger modal-->
-  <button type="button" class="btn btn-danger mt-5">
-    Remove all
-  </button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="card__footer">
+            <!-- Button trigger modal-->
+            <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Add todo
+            </button>
+          </div>
         </div>
-        <div class="modal-body">
-          <form class="title">
-            <textarea id="title" name="title" placeholder="Title"></textarea>
-          </form>
-          <form class="description">
-            <textarea id="description" name="description" placeholder="Description"></textarea>
-          </form>
-
-          <select id="user" name="form-select" placeholder="Select Users">
-            <option value="masha">Masha</option>
-            <option value="denis">Denis</option>
-            <option value="anna">Anna</option>
-            <option value="alex">Alex</option>
-          </select>
-
+      </div>
+      <div class="column">
+        <div class="card card-progress">
+          <div class="card__header">
+            <div class="card__title">In progress</div>
+            <div class="card__counter">0</div>
+          </div>
+          <div class="card__separator"></div>
+          <div class="card__body"></div>
+          <div class="card__footer">
+            <!-- Button trigger modal
+            <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Add todo
+            </button>-->
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button id="confirm" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+      </div>
+      <div class="column">
+        <div class="card card-done">
+          <div class="card__header">
+            <div class="card__title">Done</div>
+            <div class="card__counter">0</div>
+          </div>
+          <div class="card__separator"></div>
+          <div class="card__body"></div>
+          <div class="card__footer">
+            <!-- Button trigger modal-->
+            <button type="button" class="btn btn-danger mt-5">
+              Remove all
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="title">
+              <textarea id="title" name="title" placeholder="Title"></textarea>
+            </form>
+            <form class="description">
+              <textarea id="description" name="description" placeholder="Description"></textarea>
+            </form>
+
+            <select id="user" name="form-select" placeholder="Select Users">
+              <option value="masha">Masha</option>
+              <option value="denis">Denis</option>
+              <option value="anna">Anna</option>
+              <option value="alex">Alex</option>
+            </select>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="confirm" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
 </body>
 
 </html>

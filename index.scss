@@ -1,6 +1,119 @@
 @import "bootstrap/scss/bootstrap";
 @import "simplelightbox/src/simple-lightbox.scss";
 
-h1 {
-  color: purple;
+.container {
+  max-width: 1170px;
+  margin: 0 auto;
+  border: 3px solid black;
 }
+
+.navbar {
+  margin: 20px;
+  border: 3px solid purple;
+  border-radius: 20px;
+  background: rgb(222, 174, 222);
+  padding: 30px;
+
+  &__fluid {}
+
+  &__brand {
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+  }
+
+  &__clock {}
+}
+
+.navbar-light {}
+
+.column {}
+
+.card {
+  border: 2px solid black;
+  width: 350px;
+  padding: 20px;
+  border-radius: 30px;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__title {}
+
+  &__counter {}
+
+  &__separator {
+    border: 1px solid black;
+    margin-top: 20px;
+  }
+
+  &__body {}
+
+  &__footer {
+    text-align: center;
+  }
+}
+
+.btn {
+  width: 200px;
+}
+
+.btn-primary {}
+
+.mt-5 {}
+
+.card-todo {
+  background-color: rgb(218, 240, 232);
+}
+
+.card-progress {
+  background-color: rgb(248, 221, 226);
+}
+
+.card-done {
+  background-color: rgb(173, 203, 237);
+}
+
+.todo {
+  margin: 10px;
+  background-color: rgb(246, 216, 120);
+  padding: 20px;
+  border-radius: 20px;
+  border: 2px solid orange;
+}
+
+.data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.data-from-user {}
+
+.data-title {}
+
+.data-description {}
+
+.data-user {}
+
+.date {}
+
+.form-select {
+  margin: 10px;
+  max-width: 130px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn {
+  max-width: 150px;
+}
+
+.btn-primary {}
+
+.btn-danger {}
