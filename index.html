@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link rel="stylesheet" href="index.scss">
+  <script src="index.js" type="module"></script>
+</head>
+
+<body>
+
+
+  <!-- Button trigger modal-->
+  <button type="button" class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add todo
+  </button>
+
+
+
+  <!-- Button trigger modal-->
+  <button type="button" class="btn btn-danger mt-5">
+    Remove all
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="title">
+            <textarea id="title" name="title" placeholder="Title"></textarea>
+          </form>
+          <form class="description">
+            <textarea id="description" name="description" placeholder="Description"></textarea>
+          </form>
+
+          <select id="user" name="form-select" placeholder="Select Users">
+            <option value="masha">Masha</option>
+            <option value="denis">Denis</option>
+            <option value="anna">Anna</option>
+            <option value="alex">Alex</option>
+          </select>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="confirm" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
