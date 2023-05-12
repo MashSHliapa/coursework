@@ -90,13 +90,18 @@
   justify-content: space-between;
 }
 
-.data-from-user {}
+.data-from-user {
+  max-width: 180px;
+}
 
 .data-title {}
 
 .data-description {}
 
-.data-user {}
+.data-user {
+  margin-top: 10px;
+  font-weight: bolder;
+}
 
 .date {}
 
@@ -115,6 +120,18 @@
   max-width: 150px;
 }
 
+#title {
+  width: 75%;
+}
+#description {
+  width: 75%;
+}
+#titleEdit {
+  width: 75%;
+}
+#descriptionEdit {
+  width: 75%;
+}
 .btn-primary {}
 
 .btn-danger {}

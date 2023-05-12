@@ -16,6 +16,13 @@ const modalElementEdit = document.querySelector('#exampleModalEdit')
 const modaEditInstance = Modal.getOrCreateInstance(modalElementEdit)
 console.log(modaEditInstance)
 
+// Module remove
+const modalElementRemove = document.querySelector('#exampleModalRemove')
+
+const modaRemoveInstance = Modal.getOrCreateInstance(modalElementRemove)
+console.log(modaRemoveInstance)
+
+
 // helpers
 function $(selector) {
   return document.querySelector(selector)
@@ -42,32 +49,37 @@ function render(collection, wrapperTodo, wrapperInProgress, wrapperDone) {
   wrapperDone.innerHTML = donePart
 }
 
-function counter(collection, id) {
-  let counter = 0
+
+function counter(collection, conterTodo, counterInProgress, counterDone) {
+  let countTodo = 0
+  let countInProgres = 0
+  let countDone = 0
   collection.forEach((item) => {
-    counter += 1
+    if (item.status == 'todo') {
+      countTodo += 1;
+    }
+    if (item.status == 'inProgress') {
+      countInProgres += 1;
+    }
+    if (item.status == 'done') {
+      countDone += 1;
+    }
     console.log(item)
   })
-  id.innerHTML = counter;
-  if (counter > 6) {
-    alert('warning')
+  conterTodo.innerHTML = countTodo
+  counterInProgress.innerHTML = countInProgres
+  counterDone.innerHTML = countDone
+
+  //const allowValues = [countTodo, countInProgres, countDone]
+
+  if (countInProgres == 6 || countDone == 6) {
+    alert('You can create only 6 cards!')
+    formsContainer.removeEventListener('change', hanleSelect)
+  } else if (countTodo == 6) {
+    alert('You can create only 6 cards!')
+    confirmButtonElement.removeEventListener('click', handleAddForm)
   }
 }
-
-//function openInTodo() { // добавлять карточку в окно todo
-//  render(todos, rootElementTodo)
-//  counter(todos, counterElementTodo)
-//}
-
-//function openInProgress() { // добавлять карточку в окно inProgress
-//  render(todos, rootElementProgress)
-//  counter(todos, counterElementProgress)
-//}
-
-//function openInDone() { // добавлять карточку в окно Done
-//  render(todos, rootElementDone)
-//  counter(todos, counterElementDone)
-//}
 
 // vars
 const timeElement = $('.navbar__time')
@@ -76,7 +88,7 @@ const rootElement = $('#root')
 const formsContainer = $('#formContainer')
 
 let counterElementTodo = $('.card__counter')
-let counterElementProgress = $('.card__counter-progress')
+let counterElementInProgress = $('.card__counter-progress')
 let counterElementDone = $('.card__counter-done')
 
 let titleElement = $('#title')
@@ -85,7 +97,9 @@ let userElement = $('#user')
 const elementsInTodo = $('#todo')
 const elementsInProgress = $('#progress')
 const elementsInDone = $('#done')
-const removeAll = $('#remove')
+const removeAll = $('#cardRemove')
+const modalTitle = $('.title')
+const modalDescription = $('.description')
 // edit
 const editElement = $('#editCard')
 let titleElementEdit = $('#titleEdit')
@@ -102,16 +116,16 @@ window.onload = function () {
 
 ////////////////////////// todo
 let todos = []
-//let todosEdit = []
+
 
 // constructor
 function Todo(title, description, user) {
-  this.id = Date.now()
-  this.date = new Date().toLocaleDateString();
-  this.title = title;
-  this.description = description;
-  this.user = user;
-  this.status = 'todo'
+  this.id = Date.now(),
+    this.date = new Date().toLocaleDateString(),
+    this.title = title,
+    this.description = description,
+    this.user = user,
+    this.status = 'todo'
 }
 
 function buildTodoTemplate(todo) {
@@ -122,9 +136,9 @@ function buildTodoTemplate(todo) {
   <div class="todo" id=${todo.id}>
     <div class="data">
       <div class="data-from-user">
-        <div class="data-title">${todo.title}</div>
-        <div class="data-description">${todo.description}</div>
-        <div class="data-user">${todo.user}</div>
+        <div class="data-title"><strong>Title:</strong> ${todo.title}</div>
+        <div class="data-description"><strong>Description:</strong> ${todo.description}</div>
+        <div class="data-user"><strong>${todo.user}</strong></div>
       </div>
       <div class="date">${todo.date}</div>
     </div>
@@ -157,9 +171,12 @@ function handleAddForm(event) {
   todos.push(todo) // добавляем в массив todos
   console.log(todos)
   render(todos, elementsInTodo, elementsInProgress, elementsInDone)
-  counter(todos, counterElementTodo)
+  counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
+  modalTitle.reset() // чтоб удалить содержимое title
+  modalDescription.reset() // чтоб удалить содержимое description
 }
 
+const userEdit = $('#userEdit')
 editElement.addEventListener('click', handleOpenEditModal)
 //Edit — открывает модальное окно для редактирование карточки
 
@@ -169,31 +186,30 @@ function handleOpenEditModal(event) {
   const contentTitleEdit = titleElementEdit.value // редактируем все значения
   const contentDescriptionEdit = descriptioEnlementEdit.value
   const contentUserEdit = userElementEdit.value
-  const todoEdit = new Todo(contentTitleEdit, contentDescriptionEdit, contentUserEdit) // создаем новый объект todoEdit
-  todos.push(todoEdit); // добавляем новый объект в массив todos
+  const todo = new Todo(contentTitleEdit, contentDescriptionEdit, contentUserEdit) // создаем новый объект todoEdit
+  todos.push(todo); // добавляем новый объект в массив todos
   console.log(todos)
   const { target } = event;
   console.log(target)
   const { id } = target.dataset
+
   todos = todos.filter((item) => item.id == id)
-  todos.splice(id, 1, todoEdit) // заменяем предыдущий объект в массиве (оставляем редактированный)
+  todos.splice(id, 1, todo) // заменяем предыдущий объект в массиве (оставляем редактированный)
   console.log(todos)
   render(todos, elementsInTodo, elementsInProgress, elementsInDone)
+  counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
 }
 
 // удалить карточку при нажатии на Remove
 formsContainer.addEventListener('click', handleDeleteForm) // если карточка в окне Todo
 function handleDeleteForm(event) {
   event.preventDefault()
-  console.log('ok')
   const { target } = event;
-  console.log(target)
   const { role, id } = target.dataset
-  console.log(role)
   if (role == 'delete') {
     todos = todos.filter((item) => item.id != id)
     render(todos, elementsInTodo, elementsInProgress, elementsInDone)
-    counter(todos, counterElementTodo)
+    counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
     console.log(todos)
   }
 }
@@ -204,11 +220,10 @@ formsContainer.addEventListener('change', hanleSelect)
 
 function hanleSelect(event) {
   event.preventDefault()
-  console.log('ok progress')
   const { target } = event
   const { role, id } = target.dataset
   console.log(role)
-   if (role == 'menu') {
+  if (role == 'menu') {
     todos.forEach((item) => {
       if (item.id == id) {
         item.status = target.value
@@ -216,9 +231,7 @@ function hanleSelect(event) {
     })
     console.log(id)
     render(todos, elementsInTodo, elementsInProgress, elementsInDone)
-    counter(todos, counterElementTodo)
-    //counter(todos, counterElementProgress)
-    //counter(todos, counterElementDone)
+    counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
     console.log(todos)
   }
 }
@@ -228,4 +241,5 @@ removeAll.addEventListener('click', handleremoveAll)
 function handleremoveAll() {
   todos.length = ''
   render(todos, elementsInTodo, elementsInProgress, elementsInDone)
+  counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
 }
