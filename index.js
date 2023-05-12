@@ -1,5 +1,5 @@
 import { Modal } from 'bootstrap'
-import SimpleLightbox from 'simplelightbox'
+
 
 // Module
 const modalElement = document.querySelector('#exampleModal')
@@ -21,20 +21,32 @@ function $(selector) {
   return document.querySelector(selector)
 }
 
-function render(collection, wrapper, user = null) {
-  let templates = ''
+function render(collection, wrapperTodo, wrapperInProgress, wrapperDone) {
+  let todoPart = ''
+  let progressPart = ''
+  let donePart = ''
   collection.forEach((item) => {
     const template = buildTodoTemplate(item)
-    templates += template
+    if (item.status == 'todo') {
+      todoPart += template;
+    }
+    if (item.status == 'inProgress') {
+      progressPart += template;
+    }
+    if (item.status == 'done') {
+      donePart += template;
+    }
   })
-  wrapper.innerHTML = templates
+  wrapperTodo.innerHTML = todoPart
+  wrapperInProgress.innerHTML = progressPart
+  wrapperDone.innerHTML = donePart
 }
 
 function counter(collection, id) {
   let counter = 0
   collection.forEach((item) => {
     counter += 1
-    //console.log(item)
+    console.log(item)
   })
   id.innerHTML = counter;
   if (counter > 6) {
@@ -42,15 +54,26 @@ function counter(collection, id) {
   }
 }
 
-function openInTodo() { // добавлять карточку в окно todo
-  render(todos, rootElementTodo)
-  counter(todos, counterElementTodo)
-}
+//function openInTodo() { // добавлять карточку в окно todo
+//  render(todos, rootElementTodo)
+//  counter(todos, counterElementTodo)
+//}
+
+//function openInProgress() { // добавлять карточку в окно inProgress
+//  render(todos, rootElementProgress)
+//  counter(todos, counterElementProgress)
+//}
+
+//function openInDone() { // добавлять карточку в окно Done
+//  render(todos, rootElementDone)
+//  counter(todos, counterElementDone)
+//}
 
 // vars
 const timeElement = $('.navbar__time')
 const confirmButtonElement = $('#confirm')
 const rootElement = $('#root')
+const formsContainer = $('#formContainer')
 
 let counterElementTodo = $('.card__counter')
 let counterElementProgress = $('.card__counter-progress')
@@ -59,9 +82,9 @@ let counterElementDone = $('.card__counter-done')
 let titleElement = $('#title')
 let descriptioEnlement = $('#description')
 let userElement = $('#user')
-const rootElementTodo = $('#todo')
-const rootElementProgress = $('#progress')
-const rootElementDone = $('#done')
+const elementsInTodo = $('#todo')
+const elementsInProgress = $('#progress')
+const elementsInDone = $('#done')
 const removeAll = $('#remove')
 // edit
 const editElement = $('#editCard')
@@ -88,12 +111,15 @@ function Todo(title, description, user) {
   this.title = title;
   this.description = description;
   this.user = user;
-  //this.status = false
+  this.status = 'todo'
 }
 
 function buildTodoTemplate(todo) {
+  const statusTodo = todo.status == 'todo' ? 'selected' : '';
+  const statusInProgress = todo.status == 'inProgress' ? 'selected' : '';
+  const statusDone = todo.status == 'done' ? 'selected' : '';
   return `
-  <div class="todo">
+  <div class="todo" id=${todo.id}>
     <div class="data">
       <div class="data-from-user">
         <div class="data-title">${todo.title}</div>
@@ -103,17 +129,12 @@ function buildTodoTemplate(todo) {
       <div class="date">${todo.date}</div>
     </div>
 
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-secondary" data-role="todo">Todo</button>
-      <button type="button" class="btn btn-secondary" data-role="progress">In progress</button>
-      <button type="button" class="btn btn-secondary" data-role="done">Done</button>
-    </div>
-
-    <select class="form-select" data-role="menu" aria-label="Default select example">
-      <option value="1" data-role="todo">Todo</option>
-      <option value="2" data-role="progress">In progress</option>
-      <option value="3" data-role="done">Done</option>
+    <select class="form-select" data-role="menu" aria-label data-id=${todo.id} ="Default select example">
+      <option value="todo" ${statusTodo}>Todo</option>
+      <option value="inProgress" ${statusInProgress}>In progress</option>
+      <option value="done" ${statusDone}>Done</option>
     </select>
+
     <div class="btn-group" role="group" aria-label="example">
       <button type="button" data-role="edit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalEdit">Edit</button>
       <button type="button" data-role="delete" data-id=${todo.id} class="btn btn-danger">Remove</button>
@@ -135,7 +156,8 @@ function handleAddForm(event) {
   const todo = new Todo(contentTitle, contentDescription, contentUser)
   todos.push(todo) // добавляем в массив todos
   console.log(todos)
-  openInTodo()
+  render(todos, elementsInTodo, elementsInProgress, elementsInDone)
+  counter(todos, counterElementTodo)
 }
 
 editElement.addEventListener('click', handleOpenEditModal)
@@ -156,12 +178,13 @@ function handleOpenEditModal(event) {
   todos = todos.filter((item) => item.id == id)
   todos.splice(id, 1, todoEdit) // заменяем предыдущий объект в массиве (оставляем редактированный)
   console.log(todos)
-  openInTodo() // открываем в окне todo
+  render(todos, elementsInTodo, elementsInProgress, elementsInDone)
 }
 
 // удалить карточку при нажатии на Remove
-rootElementTodo.addEventListener('click', handleDeleteForm) // если карточка в окне Todo
+formsContainer.addEventListener('click', handleDeleteForm) // если карточка в окне Todo
 function handleDeleteForm(event) {
+  event.preventDefault()
   console.log('ok')
   const { target } = event;
   console.log(target)
@@ -169,72 +192,40 @@ function handleDeleteForm(event) {
   console.log(role)
   if (role == 'delete') {
     todos = todos.filter((item) => item.id != id)
-    openInTodo()
+    render(todos, elementsInTodo, elementsInProgress, elementsInDone)
+    counter(todos, counterElementTodo)
     console.log(todos)
   }
 }
-////////////////////////////////////////////////////////// IN PROGRESS
 
-function openInProgress() { // добавлять карточку в окно inProgress
-  render(todos, rootElementProgress)
-  counter(todos, counterElementProgress)
-  //todos.length = 0
-  //console.log(todos)
-  //openInTodo()
+// добавлять карточку в разные меню в зависимости от select
 
-}
-function openInDone() { // добавлять карточку в окно inProgress
-  render(todos, rootElementDone)
-  counter(todos, counterElementDone)
-  //todos.length = 0
-  //console.log(todos)
-  //openInTodo()
+formsContainer.addEventListener('change', hanleSelect)
 
-}
-
-// добавлять карточку в меню In progress из todo
-// const rootElementTodo = $('#todo')
-// const rootElementProgress = $('#progress')
-rootElementTodo.addEventListener('click', hanleSelectProgress)
-
-function hanleSelectProgress(event) {
+function hanleSelect(event) {
   event.preventDefault()
+  console.log('ok progress')
   const { target } = event
   const { role, id } = target.dataset
   console.log(role)
-  if (role == 'progress') {
-    todos = todos.filter((item) => item.id != id)
-    openInProgress()
-    todos.length = 0
-    openInTodo()
-    console.log(todos)
+   if (role == 'menu') {
+    todos.forEach((item) => {
+      if (item.id == id) {
+        item.status = target.value
+      }
+    })
     console.log(id)
-  }
-}
-
-rootElementTodo.addEventListener('click', hanleSelectDone)
-
-function hanleSelectDone(event) {
-  event.preventDefault()
-  const { target } = event
-  const { role, id } = target.dataset
-  console.log(role)
-  if (role == 'done') {
-    todos = todos.filter((item) => item.id != id)
-    openInDone()
-    todos.length = 0
-    openInTodo()
+    render(todos, elementsInTodo, elementsInProgress, elementsInDone)
+    counter(todos, counterElementTodo)
+    //counter(todos, counterElementProgress)
+    //counter(todos, counterElementDone)
     console.log(todos)
-    console.log(id)
   }
 }
 
 // удалить все окна
 removeAll.addEventListener('click', handleremoveAll)
 function handleremoveAll() {
-  console.log('delete')
   todos.length = ''
-  openInTodo()
-  openInProgress()
-  openInDone()
+  render(todos, elementsInTodo, elementsInProgress, elementsInDone)
 }
