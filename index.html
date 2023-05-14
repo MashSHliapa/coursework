@@ -22,7 +22,7 @@
       </div>
     </nav>
 
-    <div id="formContainer" class="d-flex flex-row justify-content-around bd-highlight mb-3">
+    <div id="formContainer" class="d-flex flex-row justify-content-around h-50 bd-highlight mb-3">
       <div class="column">
         <div class="card card-todo">
           <div class="card__header">
@@ -96,7 +96,8 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade text-center" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade text-center" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content bg-info">
           <div class="modal-header">
@@ -105,10 +106,10 @@
           </div>
           <div class="modal-body">
             <form class="title">
-              <textarea id="title" name="title" placeholder="Title"></textarea>
+              <textarea id="title" class="title w-75" name="title" placeholder="Title"></textarea>
             </form>
             <form class="description">
-              <textarea id="description" name="description" placeholder="Description"></textarea>
+              <textarea id="description" class="description w-75" name="description" placeholder="Description"></textarea>
             </form>
 
             <select id="user" name="form-select" placeholder="Select Users">
@@ -128,20 +129,23 @@
     </div>
 
     <!-- Modal Edit-->
-    <div class="modal fade text-center" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade text-center" id="exampleModalEdit" tabindex="-1" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content bg-info">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalEdit">You can correct the title and description, also change the username</h1>
+            <h1 class="modal-title fs-5" id="exampleModalEditLabel">You can correct the title and description, also
+              change the username</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <form class="title">
-              <textarea id="titleEdit" name="title" placeholder="Title"></textarea>
+          <div class="modal-body" id="editModalForm">
+            <form class="titleEdit">
+              <textarea id="titleEdit" class="titleEdit w-75" name="title" placeholder="Title"></textarea>
             </form>
-            <form class="description">
-              <textarea id="descriptionEdit" name="description" placeholder="Description"></textarea>
+            <form class="descriptionEdit">
+              <textarea id="descriptionEdit" class="descriptionEdit w-75" name="description" placeholder="Description"></textarea>
             </form>
+            <!--<input type="hidden" id="editStatus">-->
 
             <select id="userEdit" name="form-select" placeholder="Select Users">
               <option value="Masha">Masha</option>
@@ -150,35 +154,32 @@
               <option value="Alex">Alex</option>
             </select>
 
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button id="editCard" type="button" class="btn btn-primary" data-role="editCard"
-              data-bs-dismiss="modal">Edit</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button id="buttonEditCard" type="button" class="btn btn-primary" data-role="editCard"
+                data-bs-dismiss="modal">Edit</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Modal remove-->
+    <!--Modal Edit-->
     <div class="modal fade" id="exampleModalRemove" tabindex="-1" aria-labelledby="exampleModalRemove"
-      aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalRemove">Are you want to delete all cards?</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-            <button id="cardRemove" type="button" class="btn btn-primary" data-role="removeCard"
-              data-bs-dismiss="modal">Yes</button>
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content bg-info">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalRemoveLabel">Do you want to delete all cards?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+              <button id="cardRemove" type="button" class="btn btn-primary" data-role="removeCard"
+                data-bs-dismiss="modal">Yes</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </body>
 

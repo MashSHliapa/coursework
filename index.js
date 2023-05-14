@@ -1,11 +1,10 @@
 import { Modal } from 'bootstrap'
 
-
 // Module
 const modalElement = document.querySelector('#exampleModal')
 
 const modalInstance = Modal.getOrCreateInstance(modalElement)
-console.log(modalInstance)
+//console.log(modalInstance)
 
 // modalInstance.show() // открыть модальное окно
 // modalInstance.hide() // закрыть модальное окно
@@ -14,14 +13,13 @@ console.log(modalInstance)
 const modalElementEdit = document.querySelector('#exampleModalEdit')
 
 const modaEditInstance = Modal.getOrCreateInstance(modalElementEdit)
-console.log(modaEditInstance)
+//console.log(modaEditInstance)
 
 // Module remove
 const modalElementRemove = document.querySelector('#exampleModalRemove')
 
 const modaRemoveInstance = Modal.getOrCreateInstance(modalElementRemove)
-console.log(modaRemoveInstance)
-
+//console.log(modaRemoveInstance)
 
 // helpers
 function $(selector) {
@@ -49,7 +47,6 @@ function render(collection, wrapperTodo, wrapperInProgress, wrapperDone) {
   wrapperDone.innerHTML = donePart
 }
 
-
 function counter(collection, conterTodo, counterInProgress, counterDone) {
   let countTodo = 0
   let countInProgres = 0
@@ -71,20 +68,11 @@ function counter(collection, conterTodo, counterInProgress, counterDone) {
   counterDone.innerHTML = countDone
 
   //const allowValues = [countTodo, countInProgres, countDone]
-
-  if (countInProgres == 6 || countDone == 6) {
-    alert('You can create only 6 cards!')
-    formsContainer.removeEventListener('change', hanleSelect)
-  } else if (countTodo == 6) {
-    alert('You can create only 6 cards!')
-    confirmButtonElement.removeEventListener('click', handleAddForm)
-  }
 }
 
 // vars
 const timeElement = $('.navbar__time')
 const confirmButtonElement = $('#confirm')
-const rootElement = $('#root')
 const formsContainer = $('#formContainer')
 
 let counterElementTodo = $('.card__counter')
@@ -94,17 +82,21 @@ let counterElementDone = $('.card__counter-done')
 let titleElement = $('#title')
 let descriptioEnlement = $('#description')
 let userElement = $('#user')
+const modalTitle = $('.title')
+const modalDescription = $('.description')
 const elementsInTodo = $('#todo')
+
 const elementsInProgress = $('#progress')
 const elementsInDone = $('#done')
 const removeAll = $('#cardRemove')
-const modalTitle = $('.title')
-const modalDescription = $('.description')
+
 // edit
-const editElement = $('#editCard')
+const buttonEditElement = $('#buttonEditCard')
 let titleElementEdit = $('#titleEdit')
 let descriptioEnlementEdit = $('#descriptionEdit')
 let userElementEdit = $('#userEdit')
+const modalTitleEdit = $('.titleEdit')
+const modalDescriptionEdit = $('.descriptionEdit')
 
 // часы
 window.onload = function () {
@@ -114,9 +106,7 @@ window.onload = function () {
   }, 1000);
 };
 
-////////////////////////// todo
 let todos = []
-
 
 // constructor
 function Todo(title, description, user) {
@@ -156,11 +146,10 @@ function buildTodoTemplate(todo) {
   </div>
   `
 }
+
 // const confirmButtonElement = $('#confirm')
-// handles
 confirmButtonElement.addEventListener('click', handleAddForm)
 
-//////////////////////////////////////////////////////////////////////////// TODO
 // создать карточку
 function handleAddForm(event) {
   event.preventDefault() // отменить действия браузера по-умолчанию
@@ -176,29 +165,52 @@ function handleAddForm(event) {
   modalDescription.reset() // чтоб удалить содержимое description
 }
 
-const userEdit = $('#userEdit')
-editElement.addEventListener('click', handleOpenEditModal)
-//Edit — открывает модальное окно для редактирование карточки
 
+//const editModalFormElement = $('#editModalForm')
+//const userEdit = $('#userEdit')
+//const buttonEditElement = $('#buttonEditCard')
+//let titleElementEdit = $('#titleEdit')
+//let descriptioEnlementEdit = $('#descriptionEdit')
+//let userElementEdit = $('#userEdit')
+
+
+buttonEditElement.addEventListener('click', handleOpenEditModal)
+//Edit — открывает модальное окно для редактирование карточки
 function handleOpenEditModal(event) {
   event.preventDefault()
   console.log('ok edit')
+  const { target } = event;
+  console.log(target)
+  const { id, role } = target.dataset
+  console.log(role)
+
   const contentTitleEdit = titleElementEdit.value // редактируем все значения
   const contentDescriptionEdit = descriptioEnlementEdit.value
   const contentUserEdit = userElementEdit.value
-  const todo = new Todo(contentTitleEdit, contentDescriptionEdit, contentUserEdit) // создаем новый объект todoEdit
-  todos.push(todo); // добавляем новый объект в массив todos
-  console.log(todos)
-  const { target } = event;
-  console.log(target)
-  const { id } = target.dataset
 
-  todos = todos.filter((item) => item.id == id)
-  todos.splice(id, 1, todo) // заменяем предыдущий объект в массиве (оставляем редактированный)
+  //userElement.replaceWith(contentTitleEdit)
+  //const todo = new Todo(contentTitleEdit, contentDescriptionEdit, contentUserEdit)
+  //todos.push(todo)
+
+  if (role == 'editCard') {
+    todos.forEach((item) => {
+      if (item.id != id) {
+        item.title = contentTitleEdit
+        item.user = contentUserEdit
+        item.description = contentDescriptionEdit
+      }
+      console.log(item)
+    })
+  }
+
+  todos = todos.filter((item) => item.id != id)
   console.log(todos)
   render(todos, elementsInTodo, elementsInProgress, elementsInDone)
   counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
+  modalTitleEdit.reset()
+  modalDescriptionEdit.reset()
 }
+
 
 // удалить карточку при нажатии на Remove
 formsContainer.addEventListener('click', handleDeleteForm) // если карточка в окне Todo
@@ -233,6 +245,11 @@ function hanleSelect(event) {
     render(todos, elementsInTodo, elementsInProgress, elementsInDone)
     counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
     console.log(todos)
+  }
+
+  // чтоб не более 6-ти карточек было в In progress
+  if (role == 'menu' && target.value == "inProgress" && counterElementInProgress == 6) {
+    alert('You can add only 6 cards In progress!')
   }
 }
 
