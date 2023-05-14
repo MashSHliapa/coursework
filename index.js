@@ -49,14 +49,14 @@ function render(collection, wrapperTodo, wrapperInProgress, wrapperDone) {
 
 function counter(collection, conterTodo, counterInProgress, counterDone) {
   let countTodo = 0
-  let countInProgres = 0
+  let countInProgress = 0
   let countDone = 0
   collection.forEach((item) => {
     if (item.status == 'todo') {
       countTodo += 1;
     }
     if (item.status == 'inProgress') {
-      countInProgres += 1;
+      countInProgress += 1;
     }
     if (item.status == 'done') {
       countDone += 1;
@@ -64,10 +64,8 @@ function counter(collection, conterTodo, counterInProgress, counterDone) {
     console.log(item)
   })
   conterTodo.innerHTML = countTodo
-  counterInProgress.innerHTML = countInProgres
+  counterInProgress.innerHTML = countInProgress
   counterDone.innerHTML = countDone
-
-  //const allowValues = [countTodo, countInProgres, countDone]
 }
 
 // vars
@@ -241,17 +239,26 @@ function hanleSelect(event) {
         item.status = target.value
       }
     })
+
+    // чтоб не более 6-ти карточек было в In progress
+    let countInProgressCard = 0
+    todos.forEach((item) => {
+      if (item.status == 'inProgress') {
+        countInProgressCard += 1
+      }
+    })
+    if (role == 'menu' && target.value == 'inProgress' && countInProgressCard > 6) {
+      alert('You can add only 6 cards In progress!')
+      todos = todos.filter((item) => item.id != id)
+    }
+
     console.log(id)
     render(todos, elementsInTodo, elementsInProgress, elementsInDone)
     counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
     console.log(todos)
   }
-
-  // чтоб не более 6-ти карточек было в In progress
-  if (role == 'menu' && target.value == "inProgress" && counterElementInProgress == 6) {
-    alert('You can add only 6 cards In progress!')
-  }
 }
+
 
 // удалить все окна
 removeAll.addEventListener('click', handleremoveAll)
