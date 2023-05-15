@@ -109,7 +109,8 @@
               <textarea id="title" class="title w-75" name="title" placeholder="Title"></textarea>
             </form>
             <form class="description">
-              <textarea id="description" class="description w-75" name="description" placeholder="Description"></textarea>
+              <textarea id="description" class="description w-75" name="description"
+                placeholder="Description"></textarea>
             </form>
 
             <select id="user" name="form-select" placeholder="Select Users">
@@ -143,7 +144,8 @@
               <textarea id="titleEdit" class="titleEdit w-75" name="title" placeholder="Title"></textarea>
             </form>
             <form class="descriptionEdit">
-              <textarea id="descriptionEdit" class="descriptionEdit w-75" name="description" placeholder="Description"></textarea>
+              <textarea id="descriptionEdit" class="descriptionEdit w-75" name="description"
+                placeholder="Description"></textarea>
             </form>
             <!--<input type="hidden" id="editStatus">-->
 
@@ -163,23 +165,38 @@
         </div>
       </div>
     </div>
-    <!--Modal Edit-->
+    <!--Modal Remove-->
     <div class="modal fade" id="exampleModalRemove" tabindex="-1" aria-labelledby="exampleModalRemove"
-        aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content bg-info">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalRemoveLabel">Do you want to delete all cards?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-              <button id="cardRemove" type="button" class="btn btn-primary" data-role="removeCard"
-                data-bs-dismiss="modal">Yes</button>
-            </div>
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-info">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalRemoveLabel">Do you want to delete all cards?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <button id="cardRemove" type="button" class="btn btn-primary" data-role="removeCard"
+              data-bs-dismiss="modal">Yes</button>
           </div>
         </div>
       </div>
+    </div>
+    <!--Modal counter In progress-->
+    <div class="modal fade" id="exampleModalCounter" tabindex="-1" aria-labelledby="exampleModalCounter"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-info">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalCounterLabel">You can add only 6 cards In progress!</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 
