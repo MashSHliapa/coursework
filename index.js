@@ -37,7 +37,7 @@ let counterElementDone = $('.card__counter-done')
 
 let titleElement = $('#title')
 let descriptioEnlement = $('#description')
-let userElement = $('#user')
+let userElement = $('#userSelect')
 const modalTitle = $('.title')
 const modalDescription = $('.description')
 const elementsInTodo = $('#todo')
@@ -49,7 +49,7 @@ const removeAll = $('#cardRemove')
 const buttonEditElement = $('#buttonEditCard')
 let titleElementEdit = $('#titleEdit')
 let descriptioEnlementEdit = $('#descriptionEdit')
-let userElementEdit = $('#userEdit')
+let userElementEdit = $('#userSelectEdit')
 const modalTitleEdit = $('.titleEdit')
 const modalDescriptionEdit = $('.descriptionEdit')
 
@@ -180,11 +180,32 @@ getData ()
 // localStorage
 function setData() {
   localStorage.setItem('todos', JSON.stringify(todos))
-  const savedUser = JSON.parse(localStorage.getItem('todos'));
-  console.log(savedUser)
 }
 
 function getData () {
   const savedUser = JSON.parse(localStorage.getItem('todos')) // возврвщает опять в объект
   console.log(savedUser)
 }
+
+/// стягиваем пользоватей с JSON placeholder API
+const url = 'https://jsonplaceholder.typicode.com/users'
+
+async function getTodos () {
+  const response = await fetch(url)
+  const data = await response.json()
+  console.log(data)
+  return data
+}
+
+function printTodos (data) {
+  userElement.innerHTML = ''
+  data.forEach((item) => {
+    userElement.innerHTML += `<option value="${item.name}">${item.name}</option>`
+    userElementEdit.innerHTML += `<option value="${item.name}">${item.name}</option>`
+  })
+}
+
+;(async () => {
+  const data = await getTodos()
+  printTodos(data)
+})()
