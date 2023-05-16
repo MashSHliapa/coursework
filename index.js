@@ -2,28 +2,24 @@ import { Modal } from 'bootstrap'
 import { $, render, counter } from './helpers.js'
 import { Todo } from './constructor.js'
 
-// Module
+// Modal
 const modalElement = document.querySelector('#exampleModal')
 const modalInstance = Modal.getOrCreateInstance(modalElement)
-//console.log(modalInstance)
 
 // modalInstance.show() // открыть модальное окно
 // modalInstance.hide() // закрыть модальное окно
 
-// Module Edit
+// Modal Edit
 const modalElementEdit = document.querySelector('#exampleModalEdit')
 const modaEditInstance = Modal.getOrCreateInstance(modalElementEdit)
-//console.log(modaEditInstance)
 
-// Module remove
+// Modal remove
 const modalElementRemove = document.querySelector('#exampleModalRemove')
 const modaRemoveInstance = Modal.getOrCreateInstance(modalElementRemove)
-//console.log(modaRemoveInstance)
 
 // Modal counter In progress
 const modalElementCounter = document.querySelector('#exampleModalCounter')
 const modaCounterInstance = Modal.getOrCreateInstance(modalElementCounter)
-console.log(modaCounterInstance)
 
 
 // vars
@@ -40,15 +36,16 @@ let descriptioEnlement = $('#description')
 let userElement = $('#userSelect')
 const modalTitle = $('.title')
 const modalDescription = $('.description')
-const elementsInTodo = $('#todo')
 
+const elementsInTodo = $('#todo')
 const elementsInProgress = $('#progress')
 const elementsInDone = $('#done')
+
 const removeAll = $('#cardRemove')
 
 const buttonEditElement = $('#buttonEditCard')
 let titleElementEdit = $('#titleEdit')
-let descriptioEnlementEdit = $('#descriptionEdit')
+let descriptioElementEdit = $('#descriptionEdit')
 let userElementEdit = $('#userSelectEdit')
 const modalTitleEdit = $('.titleEdit')
 const modalDescriptionEdit = $('.descriptionEdit')
@@ -74,36 +71,29 @@ let todos = []
 
 // создать карточку
 function handleAddForm(event) {
-  event.preventDefault() // отменить действия браузера по-умолчанию
-  const contentTitle = titleElement.value //чтобы выдало значение введенного текста
+  event.preventDefault()
+  const contentTitle = titleElement.value
   const contentDescription = descriptioEnlement.value
   const contentUser = userElement.value
   const todo = new Todo(contentTitle, contentDescription, contentUser)
-  todos.push(todo) // добавляем в массив todos
+  todos.push(todo)
   console.log(todos)
   render(todos, elementsInTodo, elementsInProgress, elementsInDone)
   counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
-  modalTitle.reset() // чтоб удалить содержимое title
-  modalDescription.reset() // чтоб удалить содержимое description
+  modalTitle.reset()
+  modalDescription.reset()
   setData()
 }
 
-//Edit — открывает модальное окно для редактирование карточки
+// при нажатии на Edit в модальном окне, должны заменяться старые значения на редактированные
 function handleOpenEditModal(event) {
   event.preventDefault()
-  console.log('ok edit')
   const { target } = event;
-  console.log(target)
   const { id, role } = target.dataset
-  console.log(role)
 
   const contentTitleEdit = titleElementEdit.value // редактируем все значения
-  const contentDescriptionEdit = descriptioEnlementEdit.value
+  const contentDescriptionEdit = descriptioElementEdit.value
   const contentUserEdit = userElementEdit.value
-
-  //userElement.replaceWith(contentTitleEdit)
-  //const todo = new Todo(contentTitleEdit, contentDescriptionEdit, contentUserEdit)
-  //todos.push(todo)
 
   if (role == 'editCard') {
     todos.forEach((item) => {
@@ -112,12 +102,10 @@ function handleOpenEditModal(event) {
         item.user = contentUserEdit
         item.description = contentDescriptionEdit
       }
-      console.log(item)
     })
   }
 
   todos = todos.filter((item) => item.id != id)
-  console.log(todos)
   render(todos, elementsInTodo, elementsInProgress, elementsInDone)
   counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
   modalTitleEdit.reset()
@@ -133,7 +121,6 @@ function handleRemoveForm(event) {
     todos = todos.filter((item) => item.id != id)
     render(todos, elementsInTodo, elementsInProgress, elementsInDone)
     counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
-    console.log(todos)
   }
 }
 
@@ -142,7 +129,6 @@ function hanleSelect(event) {
   event.preventDefault()
   const { target } = event
   const { role, id } = target.dataset
-  console.log(role)
   if (role == 'menu') {
     todos.forEach((item) => {
       if (item.id == id) {
@@ -162,10 +148,8 @@ function hanleSelect(event) {
       modaCounterInstance.show()
       todos = todos.filter((item) => item.id != id)
     }
-    console.log(id)
     render(todos, elementsInTodo, elementsInProgress, elementsInDone)
     counter(todos, counterElementTodo, counterElementInProgress, counterElementDone)
-    console.log(todos)
   }
 }
 
@@ -183,8 +167,7 @@ function setData() {
 }
 
 function getData () {
-  const savedUser = JSON.parse(localStorage.getItem('todos')) // возврвщает опять в объект
-  console.log(savedUser)
+  const savedUser = JSON.parse(localStorage.getItem('todos')) // возврвщает в объект
 }
 
 /// стягиваем пользоватей с JSON placeholder API
@@ -193,7 +176,6 @@ const url = 'https://jsonplaceholder.typicode.com/users'
 async function getTodos () {
   const response = await fetch(url)
   const data = await response.json()
-  console.log(data)
   return data
 }
 
