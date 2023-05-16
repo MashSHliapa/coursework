@@ -1,45 +1,11 @@
 @import "bootstrap/scss/bootstrap";
-@import "simplelightbox/src/simple-lightbox.scss";
+@import "./navbar.scss";
+@import "./card.scss";
 
 .container {
   max-width: 1170px;
   margin: 0 auto;
   border: 3px solid black;
-}
-
-.navbar {
-  margin: 20px;
-  border: 3px solid purple;
-  border-radius: 20px;
-  background: rgb(222, 174, 222);
-  padding: 30px;
-
-  &__brand {
-    text-decoration: none;
-    font-size: 20px;
-    color: black;
-  }
-}
-
-.card {
-  border: 2px solid black;
-  width: 350px;
-  padding: 20px;
-  border-radius: 30px;
-
-  &__header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &__separator {
-    border: 1px solid black;
-    margin-top: 20px;
-  }
-
-  &__footer {
-    text-align: center;
-  }
 }
 
 .btn {
